@@ -30,6 +30,17 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
         :return: Um valor inteiro que indica o grau do vértice
         :raises: VerticeInvalidoError se o vértice não existe no grafo
         '''
+        if not self.existe_rotulo_vertice(V):
+            raise VerticeInvalidoError(f"Vértice '{V}' não existe no grafo.")
+
+        grau = 0
+        for aresta in self.arestas:
+            if self.arestas[aresta].v1.rotulo == V or self.arestas[aresta].v2.rotulo == V:
+                grau +=1
+
+            elif self.arestas[aresta].v1.rotulo == V and self.arestas[aresta].v2.rotulo == V:
+                grau += 1
+        return grau
 
 
     def ha_paralelas(self):
@@ -54,3 +65,4 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
         :return: Um valor booleano que indica se o grafo é completo
         '''
         pass
+
