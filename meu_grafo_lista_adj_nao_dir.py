@@ -30,17 +30,29 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
         :return: Um valor inteiro que indica o grau do vértice
         :raises: VerticeInvalidoError se o vértice não existe no grafo
         '''
+        # grau=0
+        # for a in self.vertices[V]:
+        #     grau = grau+1
+        # return grau
         if not self.existe_rotulo_vertice(V):
             raise VerticeInvalidoError(f"Vértice '{V}' não existe no grafo.")
 
         grau = 0
         for aresta in self.arestas:
-            if self.arestas[aresta].v1.rotulo == V or self.arestas[aresta].v2.rotulo == V:
+            if self.arestas[aresta].v1.rotulo == V:
                 grau +=1
 
-            elif self.arestas[aresta].v1.rotulo == V and self.arestas[aresta].v2.rotulo == V:
+            if self.arestas[aresta].v2.rotulo == V:
                 grau += 1
         return grau
+        # for i in self.arestas:
+        #     if self.arestas.v1 == V or self.arestas.v2 == V:
+        #         grau +=1
+        #
+        #     elif self.arestas.v1 == self.arestas.v2 == V:
+        #         grau +=1
+        # return grau
+
 
 
     def ha_paralelas(self):
@@ -48,7 +60,16 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
         Verifica se há arestas paralelas no grafo
         :return: Um valor booleano que indica se existem arestas paralelas no grafo.
         '''
-        pass
+        for a in self.arestas:
+            v1 = self.arestas[a].v1
+            v2 = self.arestas[a].v2
+            for i in self.arestas:
+                if i!=a and self.arestas[i].v1 == v1 and self.arestas[i].v2 == v2:
+                    return True
+                elif i!=a and self.arestas[i].v1 == v2 and self.arestas[i].v2 == v1:
+                    return True
+        return False
+
 
     def arestas_sobre_vertice(self, V):
         '''
@@ -57,12 +78,35 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
         :return: Uma lista os rótulos das arestas que incidem sobre o vértice
         :raises: VerticeInvalidoException se o vértice não existe no grafo
         '''
-        pass
+        rotulos = set()
+        if not self.existe_rotulo_vertice(V):
+            raise VerticeInvalidoError(f"Vértice '{V}' não existe no grafo.")
+
+        for a in self.arestas:
+            rotulo_V1 = self.arestas[a].v1.rotulo
+            rotulo_V2 = self.arestas[a].v2.rotulo
+
+            if rotulo_V1 == V:
+                rotulos.add(self.arestas[a].rotulo)
+            elif rotulo_V2 == V:
+                rotulos.add(self.arestas[a].rotulo)
+
+        return rotulos
+
 
     def eh_completo(self):
         '''
         Verifica se o grafo é completo.
         :return: Um valor booleano que indica se o grafo é completo
         '''
-        pass
+        for a in self.arestas:
+            v1 = self.arestas[a].v1
+            for i in self.arestas:
+                if i!=a and self.arestas[i].v1==v1:
+                    return False
+                elif i!=a and self.arestas[i].v2==v1:
+                    return False
+
+        return True
+
 
