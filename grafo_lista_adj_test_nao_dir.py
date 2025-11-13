@@ -193,3 +193,15 @@ class TestGrafo(unittest.TestCase):
         self.assertFalse((self.g_l5.eh_completo()))
         self.assertFalse((self.g_d.eh_completo()))
         self.assertFalse((self.g_d2.eh_completo()))
+
+    def test_grafo_dfs(self):
+        self.assertEqual(str(self.g_p_sem_paralelas.grafo_dfs("C")), (
+    "C, J, M, T, E, P, Z\n"
+    "a1(C-J), 1\n"
+    "a5(C-M), 1\n"
+    "a4(C-T), 1\n"
+    "a2(C-E), 1\n"
+    "a3(C-P), 1\n"
+    "a6(T-M), 1\n"
+    "a7(T-Z), 1"
+    ))
