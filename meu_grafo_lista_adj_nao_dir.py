@@ -99,8 +99,8 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
         Verifica se o grafo é completo.
         :return: Um valor booleano que indica se o grafo é completo
         '''
-        for a in self.arestas:
-            v1 = self.arestas[a].v1
+
+        for a in self.arestas.values() :
             for i in self.arestas:
                 if i!=a and self.arestas[i].v1==v1:
                     return False
@@ -109,4 +109,44 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
 
         return True
 
+    def vertice_oposto(self, V, A):
+        '''
+        Retorna o vértice oposto ao vértice V na aresta A.
+        '''
+        aresta = self.arestas[A]
+        if aresta.v1.rotulo == V:
+            return aresta.v2.rotulo
+        elif aresta.v2.rotulo == V:
+            return aresta.v1.rotulo
+        else:
+            raise VerticeInvalidoError(f"O vértice '{V}' não pertence à aresta '{A}'.")
 
+
+    def grafo_dfs(self, V):
+
+        arvore_dfs = MeuGrafo()
+
+        # guarda os vértices já visitados
+        visitados = set()
+
+        pilha = [V]
+        arvore_dfs.adiciona_vertice(V)
+        # vizinhos = self.arestas_sobre_vertice(V)
+
+        while pilha:
+            v = pilha.pop()
+
+            if v not in visitados:
+                visitados.add(v)
+                arestas_v = self.arestas_sobre_vertice(v)
+
+                for a in arestas_v:
+                    vizinho_v = self.vertice_oposto(v, a)
+                    if vizinho_v not in visitados:
+                        if not arvore_dfs.existe_rotulo_vertice(vizinho_v):
+                            arvore_dfs.adiciona_vertice(vizinho_v)
+
+                        arvore_dfs.adiciona_aresta(a, v, vizinho_v)
+
+                        pilha.append(vizinho_v)
+        return arvore_dfs
