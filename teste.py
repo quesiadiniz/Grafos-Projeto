@@ -17,4 +17,4 @@ g_p.adiciona_aresta('a6', 'M', 'T')
 g_p.adiciona_aresta('a7', 'T', 'Z')
 
 
-print(g_p.grafo_dfs("C"))
+print(g_p.bfs("J"))

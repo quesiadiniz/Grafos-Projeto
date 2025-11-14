@@ -122,7 +122,7 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
             raise VerticeInvalidoError(f"O vértice '{V}' não pertence à aresta '{A}'.")
 
 
-    def grafo_dfs(self, V):
+    def dfs(self, V):
 
         arvore_dfs = MeuGrafo()
 
@@ -150,3 +150,33 @@ class MeuGrafo(GrafoListaAdjacenciaNaoDirecionado):
 
                         pilha.append(vizinho_v)
         return arvore_dfs
+
+def bfs(self, V):
+
+    arvore_bfs = MeuGrafo()
+
+    visitados = set()
+    fila = [V]
+
+    arvore_bfs.adiciona_vertice(V)
+    visitados.add(V)
+
+    while fila:
+        v = fila.pop(0)
+        v = fila.pop(0)
+        arestas_v = self.arestas_sobre_vertice(v)
+
+        for a in arestas_v:
+            vizinho = self.vertice_oposto(v, a)
+
+            if vizinho not in visitados:
+                visitados.add(vizinho)
+
+                if not arvore_bfs.existe_rotulo_vertice(vizinho):
+                    arvore_bfs.adiciona_vertice(vizinho)
+
+                arvore_bfs.adiciona_aresta(a, v, vizinho)
+
+                fila.append(vizinho)
+
+    return arvore_bfs
