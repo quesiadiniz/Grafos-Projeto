@@ -18,3 +18,38 @@ g_p.adiciona_aresta('a7', 'T', 'Z')
 
 
 print(g_p.bfs("J"))
+
+# Dijkstra
+from meu_grafo_lista_adj_dir import  MeuGrafo
+
+def test_dijkstra(self):
+        """
+        Testa o funcionamento do Dijkstra no grafo manual g_p_sem_paralelas.
+        """
+        beta, pi = self.g_p_sem_paralelas.dijkstra("J")
+
+        esperado_beta = {
+            'J': 0,    # origem
+            'C': 2,    # J → C
+            'E': 5,    # J → C → E   (2 + 3)
+            'P': 4,    # J → C → P   (2 + 2)
+            'M': 6,    # J → C → M   (2 + 4)
+            'T': 7,    # J → C → M → T  (2 + 4 + 1)
+            'Z': 9     # J → C → M → T → Z  (2 + 4 + 1 + 2)
+        }
+
+        self.assertEqual(beta, esperado_beta)
+
+        # Predecessores esperados
+        esperado_pi = {
+            'J': None,
+            'C': 'J',
+            'E': 'C',
+            'P': 'C',
+            'M': 'C',
+            'T': 'M',
+            'Z': 'T'
+        }
+
+        self.assertEqual(pi, esperado_pi)
+
