@@ -52,7 +52,17 @@ class MeuGrafo(GrafoListaAdjacenciaDirecionado):
         :return: Uma lista os rótulos das arestas que incidem sobre o vértice
         :raises: VerticeInvalidoException se o vértice não existe no grafo
         '''
-        pass
+
+        if not self.existe_rotulo_vertice(V):
+            raise VerticeInvalidoError(f"Vértice '{V}' não existe no grafo.")
+
+        rotulos = set()
+
+        for aresta in self.arestas.values():
+            if aresta.v1.rotulo == V or aresta.v2.rotulo == V:
+                rotulos.add(aresta.rotulo)
+
+        return rotulos
 
     def eh_completo(self):
         '''
@@ -60,3 +70,33 @@ class MeuGrafo(GrafoListaAdjacenciaDirecionado):
         :return: Um valor booleano que indica se o grafo é completo
         '''
         pass
+
+    def dijkstra(self, v_inicial, v_final):
+
+        beta = {}  # menor distancia
+        gama = {}  # já visitado
+        pi = {}    # predecessor
+
+        for a in self.arestas.values():
+            if a.peso < 0:
+                raise ValueError(
+                    "Erro: Nao é possivel calcular o menor caminho"
+                )
+
+        for v in self.vertices:
+            beta[v] = float('inf')
+            gama[v] = 0
+            pi[v] = 'x'
+
+        beta[v_inicial] = 0
+
+        while True:
+
+            u = None  # vertice atual
+            menor = float('inf')  # valor do menor beta
+
+            for v in self.vertices:
+                if gama[v] == 0 and beta[v] < menor:
+                    menor = beta[v]
+                    u = v
+            gama[u] = 1
