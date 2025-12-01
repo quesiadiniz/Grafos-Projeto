@@ -45,15 +45,13 @@ class MeuGrafo(GrafoListaAdjacenciaDirecionado):
         '''
         pass
 
- def arestas_sobre_vertice(self, V):
+    def arestas_sobre_vertice(self, V):
         '''
         Provê uma lista que contém os rótulos das arestas que incidem sobre o vértice passado como parâmetro
         :param V: Um string com o rótulo do vértice a ser analisado
         :return: Uma lista os rótulos das arestas que incidem sobre o vértice
         :raises: VerticeInvalidoException se o vértice não existe no grafo
         '''
-        pass
-
         if not self.existe_rotulo_vertice(V):
             raise VerticeInvalidoError(f"Vértice '{V}' não existe no grafo.")
 
@@ -71,7 +69,6 @@ class MeuGrafo(GrafoListaAdjacenciaDirecionado):
         :return: Um valor booleano que indica se o grafo é completo
         '''
         pass
-        pass
 
     def dijkstra(self, v_inicial, v_final):
 
@@ -79,8 +76,8 @@ class MeuGrafo(GrafoListaAdjacenciaDirecionado):
         gama = {}  # já visitado
         pi = {}    # predecessor
 
-        for a in self.arestas.values():
-            if a.peso < 0:
+        for aresta in self.arestas.values():
+            if aresta.peso < 0:
                 raise ValueError(
                     "Erro: Nao é possivel calcular o menor caminho"
                 )
@@ -101,4 +98,30 @@ class MeuGrafo(GrafoListaAdjacenciaDirecionado):
                 if gama[v] == 0 and beta[v] < menor:
                     menor = beta[v]
                     u = v
+
+            if u is None:
+                break # quando nn tem mais vertices para analisar
+
             gama[u] = 1
+
+            # para cada aresta incidente no vertice atual - u:
+            for aresta in self.arestas_sobre_vertice(u):
+                if aresta.v1.rotulo == u:
+                    v = aresta.v2.rotulo
+                elif aresta.v2.rotulo == u:
+                    v = aresta.v1.rotulo
+
+                if gama[v] == 0 and beta[v] > (beta[u] + aresta.peso):
+                    beta[v] = beta[u] + aresta.peso
+                    pi[v] = u
+
+        caminho = []
+        atual = v_final
+
+        while atual is not None:
+            caminho.append(atual)
+            atual = pi[atual]
+
+        caminho.reverse()
+        return caminho, beta[v_final]
+
